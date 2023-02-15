@@ -12,7 +12,9 @@ class HomeController extends AbstractController
     #[Route('/')]
     public function new(): Response
     {
+        $pageTitle = "Sistema de Notícias";
         return $this->render('home.html.twig', [
+            'pageTitle' => $pageTitle,
         ]);
     }
 }
