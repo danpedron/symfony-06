@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,7 +12,7 @@ class NewsController extends AbstractController
 {
 
     #[Route('/api/news/{id<\d+>}', methods: ['GET'])]
-    public function getNew(int $id): Response
+    public function getNew(int $id, LoggerInterface $logger): Response
     {
         // TODO create a real querys
         $new = [
@@ -23,6 +24,10 @@ class NewsController extends AbstractController
                 "imagem" => "https://www.exemplo.com/imagens/arte-brasileira.jpg"
         ];
 
+        // Log
+        $logger->info('Retornando API da notícia {noticia}',[
+            'noticia' => $id,
+        ]);
         return $this->json($new);
     }
 }
