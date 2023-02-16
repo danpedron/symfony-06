@@ -3,12 +3,10 @@
 namespace App\Controller;
 
 use App\Service\NewsRepository;
-use Psr\Cache\CacheItemInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Contracts\Cache\CacheInterface;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
+
 
 
 class HomeController extends AbstractController
@@ -26,13 +24,12 @@ class HomeController extends AbstractController
         ]);
     }
 
+
     #[Route(path:'/category/{slug}', name: 'app_category_list')]
     public function category($slug, NewsRepository $newsRepository): Response
     {
-
         $categories = $newsRepository->findAllCategories();
         $news =  $newsRepository->findAll();
-
         $pageTitle = $slug;
 
         return $this->render('category.html.twig', [

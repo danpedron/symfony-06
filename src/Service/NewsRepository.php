@@ -3,14 +3,23 @@
 namespace App\Service;
 
 use Psr\Cache\CacheItemInterface;
+use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class NewsRepository
 {
+    public function __construct(
+        private HttpClientInterface $httpClient,
+        private CacheInterface $cache)
+    {
+
+    }
+
     public function findAll(): array
     {
-        $news = $cache->get('news_data', function (CacheItemInterface $cacheItem) use ($httpClient) {
+        $news = $this->cache->get('news_data', function (CacheItemInterface $cacheItem) {
             $cacheItem->expiresAfter(5);
-            $response = $httpClient->request('GET', 'https://raw.githubusercontent.com/JonasPoli/array-news/6592605d783b39aa2edac63868959ded7ef700ec/arrayNews.json');
+            $response = $this->httpClient->request('GET', 'https://raw.githubusercontent.com/JonasPoli/array-news/6592605d783b39aa2edac63868959ded7ef700ec/arrayNews.json');
             return $response->toArray();
         });
         return $news;
@@ -18,9 +27,9 @@ class NewsRepository
 
     public function findAllCategories(): array
     {
-        $categories = $cache->get('news_data', function (CacheItemInterface $cacheItem) use ($httpClient){
+        $categories = $this->cache->get('category_data', function (CacheItemInterface $cacheItem) {
             $cacheItem->expiresAfter(5);
-            $response = $httpClient->request('GET', 'https://raw.githubusercontent.com/JonasPoli/array-news/main/arrayCategoryNews.json');
+            $response = $this->httpClient->request('GET', 'https://raw.githubusercontent.com/JonasPoli/array-news/main/arrayCategoryNews.json');
             return $response->toArray();
         });
         return $categories;
