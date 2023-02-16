@@ -2,19 +2,28 @@
 
 namespace App\Controller;
 
+use Psr\Cache\CacheItemInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+
 
 class HomeController extends AbstractController
 {
 
     #[Route(path:'/', name: 'app_home')]
-    public function home(HttpClientInterface $httpClient): Response
+    public function home(HttpClientInterface $httpClient, CacheInterface $cache): Response
     {
-        $response = $httpClient->request('GET', 'https://raw.githubusercontent.com/JonasPoli/array-news/main/arrayCategoryNews.json');
-        $categories = $response->toArray();
+        $categories = $cache->get('news_data', function (CacheItemInterface $cacheItem) use ($httpClient){
+            $cacheItem->expiresAfter(5);
+            $response = $httpClient->request('GET', 'https://raw.githubusercontent.com/JonasPoli/array-news/main/arrayCategoryNews.json');
+            return $response->toArray();
+        });
+
+
+
 
         $pageTitle = "Sistema de Notícias";
         return $this->render('home.html.twig', [
