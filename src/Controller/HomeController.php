@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\NewsRepository;
 use Psr\Cache\CacheItemInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,16 +15,9 @@ class HomeController extends AbstractController
 {
 
     #[Route(path:'/', name: 'app_home')]
-    public function home(HttpClientInterface $httpClient, CacheInterface $cache): Response
+    public function home(NewsRepository $newsRepository): Response
     {
-        $categories = $cache->get('news_data', function (CacheItemInterface $cacheItem) use ($httpClient){
-            $cacheItem->expiresAfter(5);
-            $response = $httpClient->request('GET', 'https://raw.githubusercontent.com/JonasPoli/array-news/main/arrayCategoryNews.json');
-            return $response->toArray();
-        });
-
-
-
+        $categories = $newsRepository->findAllCategories();
 
         $pageTitle = "Sistema de Notícias";
         return $this->render('home.html.twig', [
@@ -33,13 +27,11 @@ class HomeController extends AbstractController
     }
 
     #[Route(path:'/category/{slug}', name: 'app_category_list')]
-    public function category($slug, HttpClientInterface $httpClient): Response
+    public function category($slug, NewsRepository $newsRepository): Response
     {
-        $response = $httpClient->request('GET','https://raw.githubusercontent.com/JonasPoli/array-news/6592605d783b39aa2edac63868959ded7ef700ec/arrayNews.json');
-        $news = $response->toArray();
 
-        $response = $httpClient->request('GET', 'https://raw.githubusercontent.com/JonasPoli/array-news/main/arrayCategoryNews.json');
-        $categories = $response->toArray();
+        $categories = $newsRepository->findAllCategories();
+        $news =  $newsRepository->findAll();
 
         $pageTitle = $slug;
 
