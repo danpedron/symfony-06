@@ -11,11 +11,19 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
+    public function __construct(
+
+        private NewsRepository $newsRepository,
+        private bool $isDebug
+    )
+    {
+
+    }
 
     #[Route(path:'/', name: 'app_home')]
-    public function home(NewsRepository $newsRepository): Response
+    public function home(): Response
     {
-        $categories = $newsRepository->findAllCategories();
+        $categories = $this->newsRepository->findAllCategories();
 
         $pageTitle = "Sistema de Notícias";
         return $this->render('home.html.twig', [
@@ -26,10 +34,10 @@ class HomeController extends AbstractController
 
 
     #[Route(path:'/category/{slug}', name: 'app_category_list')]
-    public function category($slug, NewsRepository $newsRepository): Response
+    public function category($slug): Response
     {
-        $categories = $newsRepository->findAllCategories();
-        $news =  $newsRepository->findAll();
+        $categories = $this->newsRepository->findAllCategories();
+        $news =  $this->newsRepository->findAll();
         $pageTitle = $slug;
 
         return $this->render('category.html.twig', [
