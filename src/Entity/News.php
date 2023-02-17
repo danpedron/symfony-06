@@ -26,6 +26,11 @@ class News
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $content = null;
 
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable();
+    }
+
     public function getId(): ?int
     {
         return $this->id;

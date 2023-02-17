@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\News;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -29,5 +31,20 @@ class NewsController extends AbstractController
             'noticia' => $id,
         ]);
         return $this->json($new);
+    }
+
+    #[Route('news/new')]
+    public function new(EntityManagerInterface $entityManager):Response
+    {
+        $news = new News();
+        $news->setTitle('Jovem recebe prêmio em São Paulo');
+        $news->setDescription('Um Jovem de 18 anos recebe prêmio memorável em São Paulo');
+
+        $entityManager->persist($news);
+        $entityManager->flush();
+
+        return new Response(
+            sprintf('Notícia criada em %s',$news->getCreatedAt()->format('d/m/y h:i:s'))
+        );
     }
 }
