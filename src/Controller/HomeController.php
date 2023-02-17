@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\News;
 use App\Service\NewsRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -23,6 +25,8 @@ class HomeController extends AbstractController
     #[Route(path:'/', name: 'app_home')]
     public function home(): Response
     {
+
+
         $categories = $this->newsRepository->findAllCategories();
 
         $pageTitle = "Sistema de Notícias";
@@ -34,10 +38,13 @@ class HomeController extends AbstractController
 
 
     #[Route(path:'/category/{slug}', name: 'app_category_list')]
-    public function category($slug): Response
+    public function category($slug,NewsRepository $newsRepository): Response
     {
+
+        $news = $newsRepository->findAll();
+
         $categories = $this->newsRepository->findAllCategories();
-        $news =  $this->newsRepository->findAll();
+
         $pageTitle = $slug;
 
         return $this->render('category.html.twig', [

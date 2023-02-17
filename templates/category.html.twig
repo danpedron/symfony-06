@@ -35,10 +35,9 @@
 
                                         <button type="button" class="btn btn-sm btn-outline-secondary">Detalhes</button>
                                     </div>
-                                    <small class="text-muted">{{ new.create_at|ago(locale='pt') }}</small>
+                                    <small class="text-muted">{{ new.createdAt|ago(locale='pt') }}</small>
                                 </div>
                             </div>
-                        </div>
                     </div>
                     {% endfor %}
 
