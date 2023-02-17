@@ -5,20 +5,23 @@ namespace App\Service;
 use Psr\Cache\CacheItemInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 class NewsRepository
 {
     public function __construct(
         private HttpClientInterface $httpClient,
-        private CacheInterface $cache)
+        private CacheInterface $cache,
+        #[Autowire('%kernel.debug%')]
+        private bool $isDebug
+    )
     {
-
     }
 
     public function findAll(): array
     {
         $news = $this->cache->get('news_data', function (CacheItemInterface $cacheItem) {
-            $cacheItem->expiresAfter(5);
+            $cacheItem->expiresAfter($this->isDebug ? 5 : 60);
             $response = $this->httpClient->request('GET', 'https://raw.githubusercontent.com/JonasPoli/array-news/6592605d783b39aa2edac63868959ded7ef700ec/arrayNews.json');
             return $response->toArray();
         });
