@@ -16,7 +16,9 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class NewsRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(
+        ManagerRegistry $registry,
+        private NewsCategoryRepository $categoryRepository)
     {
         parent::__construct($registry, News::class);
     }
@@ -41,7 +43,7 @@ class NewsRepository extends ServiceEntityRepository
 
     public function findByCategoryTitle(string $title):array
     {
-        $category = $this->findOneBy([
+        $category = $this->categoryRepository->findOneBy([
             'title' => $title,
         ]);
 
