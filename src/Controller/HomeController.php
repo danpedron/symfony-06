@@ -6,6 +6,7 @@ use App\Entity\News;
 use App\Repository\NewsCategoryRepository;
 use App\Repository\NewsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -51,6 +52,21 @@ class HomeController extends AbstractController
             'pageTitle' => $pageTitle,
             'categories' => $categories,
             'news' => $news,
+        ]);
+    }
+
+    #[Route(path:'/pesquisa/', name: 'app_news_filter')]
+    public function filter(Request $request, NewsRepository $newsRepository,NewsCategoryRepository $categoryRepository): Response
+    {
+        $search = $request->query->get('search');
+        $categories = $categoryRepository->findAll();
+
+        $news = $newsRepository->findBySearch($search);
+        return $this->render('search.html.twig', [
+            'pageTitle' => 'Resultado da pesquisa',
+            'categories' => $categories,
+            'news' => $news,
+            'search' => $search,
         ]);
     }
 

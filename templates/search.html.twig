@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ pageTitle }}{% endblock %}
+{% block body %}
+
+    <!--Section: News of the day-->
+    <main class="container">
+
+        <section id="section-introduction">
+            <!-- Main title -->
+            <h2 class="h1 fw-bold">{{ search }}
+
+            </h2>
+
+            <!-- Seo title -->
+            <h1 class="h6">Pesquisando por {{ search }}
+            </h1>
+
+
+        </section>
+<hr>
+        {% if news|length == 0 %}
+            Não encontramos nenhum resultado<br><br>
+        {% endif %}
+
+        {% for new in news %}
+    <div class="row gx-5">
+        <div class="col-md-4 mb-4">
+            <div class="bg-image hover-overlay ripple shadow-2-strong rounded-5" data-mdb-ripple-color="light">
+                <img src="{{ new.image }}" class="img-fluid" />
+                <a href="#!">
+                    <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-8 mb-8">
+            <a href="{{ path('app_category_list',{'slug':new.category.title}) }}" class="text-white badge bg-danger px-2 py-1 shadow-1-strong mb-3">{{ new.category.title }}</a>
+            <h4><strong>{{ new.title }}</strong></h4>
+            <p class="text-muted">
+               {{ new.description }}
+            </p>
+            <button type="button" class="btn btn-primary">Leia Mais</button>
+        </div>
+    </div>
+        {% endfor %}
+    </main>
+
+{#    aqui #}
+    <!--Section: News of the day-->
+
+
+{% endblock %}
