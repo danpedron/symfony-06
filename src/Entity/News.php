@@ -29,6 +29,9 @@ class News
     #[ORM\Column(length: 255)]
     private ?string $image = null;
 
+    #[ORM\ManyToOne(inversedBy: 'news')]
+    private ?NewsCategory $category = null;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
@@ -95,6 +98,18 @@ class News
     public function setImage(string $image): self
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    public function getCategory(): ?NewsCategory
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?NewsCategory $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }

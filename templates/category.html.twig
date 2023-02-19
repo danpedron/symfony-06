@@ -29,7 +29,7 @@
                         <div class="card shadow-sm">
                             <img src="{{ new.image }}">
                             <div class="card-body">
-                                <p class="card-text"><h3>{{ new.title }}</h3> {{ new.description }}</p>
+                                <p class="card-text"><h3>{{ new.title }}</h3></p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="btn-group">
 
@@ -38,6 +38,7 @@
                                     <small class="text-muted">{{ new.createdAt|ago(locale='pt') }}</small>
                                 </div>
                             </div>
+                    </div>
                     </div>
                     {% endfor %}
 
