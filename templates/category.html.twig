@@ -25,7 +25,7 @@
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                     {% for new in news %}
                     <div class="col">
-                        <a class="card card-news shadow-sm text-decoration-none" href="{{ path('app_home_newsdetail',{'id':new.id}) }}">
+                        <a class="card card-news shadow-sm text-decoration-none" href="{{ path('app_home_newsdetail',{'slug':new.slug}) }}">
                             <img src="{{ new.image }}">
                             <div class="card-body">
                                 <p class="card-text"><h3 class="text-black">{{ new.title }}</h3></p>

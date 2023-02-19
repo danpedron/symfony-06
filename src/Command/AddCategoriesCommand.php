@@ -33,7 +33,7 @@ class AddCategoriesCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        die('Não vou mais executar');
+        //die('Não vou mais executar');
         $newsCategory = new NewsCategory();
         $newsCategory->setTitle("Mundo");
         $this->categoryRepository->save($newsCategory, true);

@@ -70,7 +70,7 @@ class HomeController extends AbstractController
         ]);
     }
 
-    #[Route(path:'/news/{id}', name: 'app_home_newsdetail')]
+    #[Route(path:'/news/{slug}', name: 'app_home_newsdetail')]
     public function newsDetail(News $news,NewsCategoryRepository $categoryRepository){
 
         $categories = $categoryRepository->findAll();
