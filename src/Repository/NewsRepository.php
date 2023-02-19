@@ -57,7 +57,7 @@ class NewsRepository extends ServiceEntityRepository
     public function findBySearch($value): array
     {
         return $this->createQueryBuilder('n')
-            ->andWhere('n.title like %'.$value.'%')
+            ->andWhere('n.title like :val')
             ->setParameter('val', '%'.$value.'%')
             ->orderBy('n.id', 'ASC')
             ->setMaxResults(10)

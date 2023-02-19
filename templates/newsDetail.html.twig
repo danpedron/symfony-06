@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ pageTitle }}{% endblock %}
+{% block body %}
+    <main class="container">
+        <h1>
+            {{ news.title }}
+        </h1>
+        <hr>
+        <h3>
+            {{ news.description }}
+        </h3>
+        <a href="{{ path('app_category_list',{'slug':news.category.title}) }}" class="text-white badge bg-danger px-2 py-1 shadow-1-strong mb-3 text-decoration-none">{{ news.category.title }}</a> - {{ news.createdAt|ago(locale='pt') }}
+
+        <hr>
+        <div class="row">
+            <div class="col-12">
+                <img src="{{ news.image }}" class="float-start me-4 mb-4">
+                {{ news.content|raw }}
+            </div>
+
+        </div>
+
+    </main>
+
+{% endblock %}
+
+
+
+

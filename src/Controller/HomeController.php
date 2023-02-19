@@ -70,4 +70,15 @@ class HomeController extends AbstractController
         ]);
     }
 
+    #[Route(path:'/news/{id}', name: 'app_home_newsdetail')]
+    public function newsDetail($id, NewsRepository $newsRepository,NewsCategoryRepository $categoryRepository){
+        $news = $newsRepository->find($id);
+        $categories = $categoryRepository->findAll();
+        return $this->render('newsDetail.html.twig', [
+            'pageTitle' => $news->getTitle(),
+            'categories' => $categories,
+            'news' => $news,
+        ]);
+    }
+
 }
