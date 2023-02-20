@@ -47,9 +47,13 @@ class NewsRepository extends ServiceEntityRepository
             'title' => $title,
         ]);
 
-        $news = $this->findBy([
+        $news = $this->findBy(
+            [
             'category' => $category
-        ]);
+        ],[
+            'createdAt' =>'DESC'
+            ]
+        );
 
         return $news;
     }
@@ -59,7 +63,7 @@ class NewsRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('n')
             ->andWhere('n.title like :val')
             ->setParameter('val', '%'.$value.'%')
-            ->orderBy('n.id', 'ASC')
+            ->orderBy('n.createdAt', 'DESC')
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()
