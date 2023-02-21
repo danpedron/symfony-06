@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\News;
 use App\Repository\NewsCategoryRepository;
 use App\Repository\NewsRepository;
+use Pagerfanta\Doctrine\ORM\QueryAdapter;
+use Pagerfanta\Pagerfanta;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,11 +40,19 @@ class HomeController extends AbstractController
 
 
     #[Route(path:'/category/{slug}', name: 'app_category_list')]
-    public function category($slug,NewsRepository $newsRepository, NewsCategoryRepository $categoryRepository): Response
+    public function category($slug,Request $request, NewsRepository $newsRepository, NewsCategoryRepository $categoryRepository): Response
     {
 
         //$news = $newsRepository->findAll();
         $news = $newsRepository->findByCategoryTitle($slug);
+
+        $queryBuilder = $newsRepository->createQueryBuilderCategoryTitle($slug);
+        $adapter = new QueryAdapter($queryBuilder);
+        $pagerFanta = Pagerfanta::createForCurrentPageWithMaxPerPage(
+            $adapter,
+            $request->query->get('page',1),
+            6
+        );
 
         $categories = $categoryRepository->findAll();
 
@@ -51,7 +61,7 @@ class HomeController extends AbstractController
         return $this->render('category.html.twig', [
             'pageTitle' => $pageTitle,
             'categories' => $categories,
-            'news' => $news,
+            'pager' => $pagerFanta,
         ]);
     }
 
@@ -61,11 +71,19 @@ class HomeController extends AbstractController
         $search = $request->query->get('search');
         $categories = $categoryRepository->findAll();
 
-        $news = $newsRepository->findBySearch($search);
+        // $news = $newsRepository->findBySearch($search);
+        $queryBuilder = $newsRepository->createQueryBuilderBySearch($search);
+        $adapter = new QueryAdapter($queryBuilder);
+        $pagerFanta = Pagerfanta::createForCurrentPageWithMaxPerPage(
+            $adapter,
+            $request->query->get('page',1),
+            6
+        );
+
         return $this->render('search.html.twig', [
             'pageTitle' => 'Resultado da pesquisa',
             'categories' => $categories,
-            'news' => $news,
+            'pager' => $pagerFanta,
             'search' => $search,
         ]);
     }

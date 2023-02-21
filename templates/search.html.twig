@@ -18,11 +18,13 @@
 
         </section>
 <hr>
-        {% if news|length == 0 %}
+        {% if pager.nbResults is defined and  pager.nbResults == 0 %}
             Não encontramos nenhum resultado<br><br>
+        {% else %}
+            Foram encontramos <strong>{{ pager.nbResults }}</strong> resultado<br><br>
         {% endif %}
 
-        {% for new in news %}
+        {% for new in pager %}
     <div class="row gx-5">
         <div class="col-md-4 mb-4">
             <div class="bg-image hover-overlay ripple shadow-2-strong rounded-5" data-mdb-ripple-color="light">
@@ -43,6 +45,7 @@
         </div>
     </div>
         {% endfor %}
+        {{ pagerfanta(pager)}}
     </main>
 
 {#    aqui #}

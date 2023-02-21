@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\News;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -58,6 +59,16 @@ class NewsRepository extends ServiceEntityRepository
         return $news;
     }
 
+    public function createQueryBuilderCategoryTitle($value): QueryBuilder
+    {
+        return $this->createQueryBuilder('n')
+            ->join('n.category','c')
+            ->andWhere('c.title like :val')
+            ->setParameter('val', '%'.$value.'%')
+            ->orderBy('n.createdAt', 'DESC')
+            ;
+    }
+
     public function findBySearch($value): array
     {
         return $this->createQueryBuilder('n')
@@ -67,6 +78,16 @@ class NewsRepository extends ServiceEntityRepository
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()
+        ;
+    }
+
+
+    public function createQueryBuilderBySearch($value): QueryBuilder
+    {
+        return $this->createQueryBuilder('n')
+            ->andWhere('n.title like :val')
+            ->setParameter('val', '%'.$value.'%')
+            ->orderBy('n.createdAt', 'DESC')
         ;
     }
 

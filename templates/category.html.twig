@@ -21,9 +21,15 @@
 
         <div class="album py-5 bg-light">
             <div class="container">
+                {% if pager.nbResults is defined and  pager.nbResults == 0 %}
+                    Não encontramos nenhum resultado<br><br>
+                {% else %}
+                    Foram encontramos <strong>{{ pager.nbResults }}</strong> resultado<br><br>
+                {% endif %}
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 mb-5">
 
-                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                    {% for new in news %}
+
+                    {% for new in pager %}
                     <div class="col">
                         <a class="card card-news shadow-sm text-decoration-none" href="{{ path('app_home_newsdetail',{'slug':new.slug}) }}">
                             <img src="{{ new.image }}">
@@ -42,7 +48,9 @@
                     {% endfor %}
 
 
+
                 </div>
+                {{ pagerfanta(pager)}}
             </div>
         </div>
 
