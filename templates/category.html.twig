@@ -26,9 +26,8 @@
                 {% else %}
                     Foram encontramos <strong>{{ pager.nbResults }}</strong> resultado<br><br>
                 {% endif %}
-                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 mb-5">
-
-
+                <turbo-frame  id="browse-list-{{ pager.currentPage }}" >
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 mb-5">
                     {% for new in pager %}
                     <div class="col">
                         <a class="card card-news shadow-sm text-decoration-none" href="{{ path('app_home_newsdetail',{'slug':new.slug}) }}">
@@ -50,7 +49,14 @@
 
 
                 </div>
-                {{ pagerfanta(pager)}}
+                    {% if pager.hasNextPage %}
+                        <turbo-frame id="browse-list-{{ pager.nextPage }}" src="{{ pagerfanta_page_url(pager, pager.nextPage) }}" loading="lazy"></turbo-frame>
+                    {% endif %}
+                </turbo-frame>
+
+
+
+
             </div>
         </div>
 
