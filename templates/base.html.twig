@@ -43,9 +43,11 @@
 
     <div class="nav-scroller py-1 mb-2">
         <nav class="nav d-flex justify-content-between">
-            {% for category in categories %}
-            <a class="p-2 link-secondary" title="{{ category.title }}" href="{{ path('app_category_list', {'slug':category.title} ) }}">{{ category.title }}</a>
-            {% endfor %}
+            {% if categories is defined  %}
+                {% for category in categories %}
+                <a class="p-2 link-secondary" title="{{ category.title }}" href="{{ path('app_category_list', {'slug':category.title} ) }}">{{ category.title }}</a>
+                {% endfor %}
+            {% endif %}
         </nav>
     </div>
 </div>
