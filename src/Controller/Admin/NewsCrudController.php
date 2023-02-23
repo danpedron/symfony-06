@@ -4,6 +4,8 @@ namespace App\Controller\Admin;
 
 use App\Entity\News;
 use App\Repository\NewsCategoryRepository;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
@@ -51,4 +53,12 @@ class NewsCrudController extends AbstractCrudController
 
         ];
     }
+
+    public function configureActions(Actions $actions): Actions
+    {
+        return parent::configureActions($actions)
+            ->disable(Crud::PAGE_INDEX, Action::DETAIL);
+    }
+
+
 }
