@@ -13,6 +13,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class NewsCrudController extends AbstractCrudController
@@ -33,6 +34,7 @@ class NewsCrudController extends AbstractCrudController
             ->setEntityLabelInSingular('Notícia')
             ->setPageTitle('index','Gerenciamento de Notícias')
             ->setPaginatorPageSize(30)
+            ->addFormTheme('@FOSCKEditor/Form/ckeditor_widget.html.twig')
             ;
     }
 
@@ -43,7 +45,7 @@ class NewsCrudController extends AbstractCrudController
             AssociationField::new('category')->setFormTypeOptions(['choice_label'=>'title','choice_value'=> 'id'] )->setLabel('Categoria'),
             TextField::new('title')->setLabel('Título'),
             TextField::new('image')->setLabel('URL da Imagem'),
-            TextareaField::new('content')->hideOnIndex()->setLabel('Conteúdo'),
+            TextareaField::new('content')->hideOnIndex()->setLabel('Conteúdo')->setFormType(CKEditorType::class),
             DateTimeField::new('createdAt')->setLabel('Criada em')->setFormTypeOption('disabled','disabled'),
             TextField::new('slug')->setLabel('Slug')->setFormTypeOption('disabled','disabled')->hideOnIndex(),
 
