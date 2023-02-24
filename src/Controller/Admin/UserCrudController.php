@@ -3,6 +3,8 @@
 namespace App\Controller\Admin;
 
 use App\Entity\User;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
@@ -30,11 +32,27 @@ class UserCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            return [];
+        }
         return [
             IdField::new('id')->hideOnForm(),
             TextField::new('email')->setFormTypeOption('disabled','disabled'),
             ArrayField::new('roles')
         ];
     }
+
+    public function configureActions(Actions $actions): Actions
+    {
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            return parent::configureActions($actions)
+                ->disable(Action::EDIT)
+                ->disable(Action::DELETE)
+                ->disable(Action::BATCH_DELETE)
+                ->disable(Crud::PAGE_INDEX);
+        }
+        return parent::configureActions($actions);
+    }
+
 
 }
