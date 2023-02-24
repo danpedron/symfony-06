@@ -91,6 +91,31 @@ class NewsRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findLatestNews($qtd=5): array
+    {
+        return $this->createQueryBuilder('n')
+
+            ->orderBy('n.createdAt', 'DESC')
+            ->setMaxResults($qtd)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+
+    public function findBestCategory($qtd=5){
+        return $this->createQueryBuilder('n')
+            ->join('n.category', 'c')
+            ->select('c.title')
+            ->select('c.title, count(n.category) as qtd')
+            ->groupBy("n.category")
+            ->orderBy('qtd', 'DESC')
+            ->setMaxResults($qtd)
+            ->getQuery()
+            ->getResult();
+
+    }
+
 //    public function findOneBySomeField($value): ?News
 //    {
 //        return $this->createQueryBuilder('n')
