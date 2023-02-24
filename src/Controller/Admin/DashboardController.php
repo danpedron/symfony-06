@@ -16,13 +16,11 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
-use Symfony\UX\Chartjs\Model\Chart;
 
 
 class DashboardController extends AbstractDashboardController
 {
-    public function __construct(private NewsRepository $newsRepository, private ChartBuilderInterface $chartBuilder)
+    public function __construct(private NewsRepository $newsRepository)
     {
     }
 
@@ -33,7 +31,6 @@ class DashboardController extends AbstractDashboardController
         return $this->render('admin/dashboard.html.twig',[
             'lastNews' => $this->newsRepository->findLatestNews(10),
             'bestCat' => $this->newsRepository->findBestCategory(),
-            'chart' => $this->getChart(),
             ]);
     }
 
@@ -61,33 +58,6 @@ class DashboardController extends AbstractDashboardController
     {
         return parent::configureActions()
             ->add(Crud::PAGE_INDEX, Action::DETAIL);
-    }
-
-    public function getChart(): Chart{
-        $chart = $this->chartBuilder->createChart(Chart::TYPE_LINE);
-
-        $chart->setData([
-            'labels' => ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-            'datasets' => [
-                [
-                    'label' => 'My First dataset',
-                    'backgroundColor' => 'rgb(255, 99, 132)',
-                    'borderColor' => 'rgb(255, 99, 132)',
-                    'data' => [0, 10, 5, 2, 20, 30, 45],
-                ],
-            ],
-        ]);
-
-        $chart->setOptions([
-            'scales' => [
-                'y' => [
-                    'suggestedMin' => 0,
-                    'suggestedMax' => 100,
-                ],
-            ],
-        ]);
-
-        return $chart;
     }
 
 }
