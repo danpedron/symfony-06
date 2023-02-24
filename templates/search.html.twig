@@ -37,13 +37,19 @@
 
             <div class="col-md-8 mb-8">
                 <a href="{{ path('app_category_list',{'slug':new.category.title}) }}" class="text-white badge bg-danger px-2 py-1 shadow-1-strong mb-3">{{ new.category.title }}</a>
+                <p>
+                    {{ new.createdAt|date('d/m/Y') }} - {{ new.createdAt|ago(locale='pt') }}
+                </p>
                 <h4><strong>{{ new.title }}</strong></h4>
                 <p class="text-muted">
                    {{ new.description }}
                 </p>
+
+
                 <a href="{{ path('app_home_newsdetail',{'slug':new.slug}) }}" type="button" class="btn btn-primary">Leia Mais</a>
             </div>
         </div>
+                <hr>
             {% endfor %}
             {% if pager.hasNextPage %}
                 <turbo-frame id="browse-list-{{ pager.nextPage }}" src="{{ pagerfanta_page_url(pager, pager.nextPage) }}" loading="lazy"></turbo-frame>

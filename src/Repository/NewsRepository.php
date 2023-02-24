@@ -91,6 +91,24 @@ class NewsRepository extends ServiceEntityRepository
         ;
     }
 
+    public function createQueryBuilderByDate($year, $month): QueryBuilder
+    {
+
+
+        $a_date = $year."-".$month."-23";
+        $lastDayOfMonth =  date("t", strtotime($a_date));
+
+        $firstDate = $year."-".$month."-01";
+        $lastDate = $year."-".$month."-".$lastDayOfMonth;
+
+        return $this->createQueryBuilder('n')
+            ->andWhere('n.createdAt BETWEEN :start AND :end')
+            ->setParameter('start', $firstDate)
+            ->setParameter('end', $lastDate)
+            ->orderBy('n.createdAt', 'DESC')
+            ;
+    }
+
     public function findLatestNews($qtd=5): array
     {
         return $this->createQueryBuilder('n')

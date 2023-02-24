@@ -27,16 +27,18 @@
     <header class="blog-header lh-1 py-3">
         <div class="row flex-nowrap justify-content-between align-items-center">
             <div class="col-4 pt-1">
-                <a class="link-secondary" href="#">Subscribe</a>
+                <a class="link-secondary" href="{{ path('app_register') }}">Inscreva-se</a>
             </div>
             <div class="col-4 text-center">
-                <a class="blog-header-logo text-dark" href="{{ path('app_home') }}">Large</a>
+                <a class="blog-header-logo text-dark" href="{{ path('app_home') }}">
+                    <img src="{{ asset('img/news-report-256.png') }}" width="100">
+                </a>
             </div>
             <div class="col-4 d-flex justify-content-end align-items-center">
                 <form action="{{ path('app_news_filter') }}" class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
-                    <input type="search" name="search" class="form-control" placeholder="Search..." aria-label="Search">
+                    <input type="search" name="search" class="form-control" placeholder="Pesquisar" aria-label="Search">
                 </form>
-                <a class="btn btn-sm btn-outline-secondary" href="#">Sign up</a>
+                <a class="btn btn-sm btn-outline-secondary" href="{{ path('app_sign_in') }}">Entrar</a>
             </div>
         </div>
     </header>
@@ -53,10 +55,10 @@
 </div>
 {% block body %}{% endblock %}
 <footer class="blog-footer">
-    <p>Blog template built for <a href="https://getbootstrap.com/">Bootstrap</a> by <a
-                href="https://twitter.com/mdo">@mdo</a>.</p>
+    <p>Contruído com <a href="https://getbootstrap.com/" target="_blank">Bootstrap</a> e <a
+                href="https://symfony.com"  target="_blank">Symfony</a>.</p>
     <p>
-        <a href="#">Back to top</a>
+        <a href="#">Voltar ao topo</a>
     </p>
 </footer>
 
