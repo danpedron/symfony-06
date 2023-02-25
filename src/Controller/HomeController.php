@@ -124,7 +124,7 @@ class HomeController extends AbstractController
 
     #[Route(path:'/news/{slug}', name: 'app_home_newsdetail')]
     public function newsDetail(News $news,NewsCategoryRepository $categoryRepository){
-
+        
         $categories = $categoryRepository->findAll();
 
         return $this->render('newsDetail.html.twig', [
@@ -133,5 +133,4 @@ class HomeController extends AbstractController
             'news' => $news,
         ]);
     }
-
 }
