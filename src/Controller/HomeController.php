@@ -2,40 +2,35 @@
 
 namespace App\Controller;
 
-use App\Service\NewsRepository;
+use App\Service\NewsService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
-
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class HomeController extends AbstractController
 {
 
     #[Route(path:'/', name: 'app_home')]
-    public function home(NewsRepository $newsRepository): Response
+    public function home(NewsService $service): Response
     {
-        $categories = $newsRepository->findAllCategories();
 
         $pageTitle = "Sistema de Notícias";
         return $this->render('home.html.twig', [
             'pageTitle' => $pageTitle,
-            'categories' => $categories,
+            'categories' => $service->getCategoyList(),
         ]);
     }
 
-
     #[Route(path:'/category/{slug}', name: 'app_category_list')]
-    public function category($slug, NewsRepository $newsRepository): Response
+    public function category($slug, NewsService $service): Response
     {
-        $categories = $newsRepository->findAllCategories();
-        $news =  $newsRepository->findAll();
         $pageTitle = $slug;
-
         return $this->render('category.html.twig', [
             'pageTitle' => $pageTitle,
-            'categories' => $categories,
-            'news' => $news,
+            'categories' => $service->getCategoyList(),
+            'news' => $service->getNewsList(),
         ]);
     }
 
