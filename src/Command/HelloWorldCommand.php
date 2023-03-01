@@ -13,10 +13,11 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
     name: 'app:hello-world',
-    description: 'Add a short description for your command',
+    description: 'Show Hello World',
 )]
 class HelloWorldCommand extends Command
 {
+
     public function __construct(private NewsRepository $newsRepository)
     {
         parent::__construct();
@@ -40,16 +41,12 @@ class HelloWorldCommand extends Command
         }
 
         if ($input->getOption('option1')) {
-            // ...
+            $io->writeln('Option 1 detectado');
         }
 
-        if ($io->confirm('Quer ver a manchete?')){
-            $news = $this->newsRepository->findAll();
-            $mix = $news[array_rand($news)];
-            $io->note('A noticia mais importante é '.$mix['title']);
-        }
+        dump($this->newsRepository->findAllCategories());
 
-        $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
+        $io->success('Command finalizado com sucesso');
 
         return Command::SUCCESS;
     }
