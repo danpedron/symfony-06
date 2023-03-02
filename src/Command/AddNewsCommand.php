@@ -15,22 +15,21 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
     name: 'app:add-news',
-    description: 'Add a short description for your command',
+    description: 'Adiciona notícias',
 )]
 class AddNewsCommand extends Command
 {
+
     public function __construct(
+        private NewsRepository $newsRepository,
         private NewsCategoryRepository $categoryRepository,
-        private NewsRepository $newsRepository
     )
     {
-
         parent::__construct();
     }
 
     protected function configure(): void
     {
-
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -1629,7 +1628,11 @@ class AddNewsCommand extends Command
         $this->newsRepository->save($news, true);
 
 
-        $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
+
+
+
+
+        $io->success('Notícias adicionadas com sucesso');
 
         return Command::SUCCESS;
     }
