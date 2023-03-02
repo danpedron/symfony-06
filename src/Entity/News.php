@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\NewsRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation\Slug;
 
 #[ORM\Entity(repositoryClass: NewsRepository::class)]
 class News
@@ -21,20 +22,24 @@ class News
     private ?string $description = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $createdAt = null;
+    private ?\DateTimeImmutable $createAt = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $content = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
 
     #[ORM\ManyToOne(inversedBy: 'news')]
     private ?NewsCategory $category = null;
 
+    #[ORM\Column(length: 255,unique: true)]
+    #[Slug(fields: ['title'])]
+    private ?string $slug = null;
+
     public function __construct()
     {
-        $this->createdAt = new \DateTimeImmutable();
+        $this->createAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -66,14 +71,14 @@ class News
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreateAt(): ?\DateTimeImmutable
     {
-        return $this->createdAt;
+        return $this->createAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt): self
+    public function setCreateAt(\DateTimeImmutable $createAt): self
     {
-        $this->createdAt = $createdAt;
+        $this->createAt = $createAt;
 
         return $this;
     }
@@ -95,7 +100,7 @@ class News
         return $this->image;
     }
 
-    public function setImage(string $image): self
+    public function setImage(?string $image): self
     {
         $this->image = $image;
 
@@ -110,6 +115,18 @@ class News
     public function setCategory(?NewsCategory $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }

@@ -4,7 +4,6 @@ namespace App\Command;
 
 use App\Entity\NewsCategory;
 use App\Repository\NewsCategoryRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -15,12 +14,11 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
     name: 'app:add-categories',
-    description: 'Adicionar caterias de notícias',
+    description: 'Adicionar categorias de notícias',
 )]
 class AddCategoriesCommand extends Command
 {
-
-    public function __construct(private NewsCategoryRepository $categoryRepository)
+    public function __construct(private NewsCategoryRepository $newsCategoryRepository)
     {
         parent::__construct();
     }
@@ -33,57 +31,66 @@ class AddCategoriesCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        die('Não vou mais executar');
-        $newsCategory = new NewsCategory();
-        $newsCategory->setTitle("Mundo");
-        $this->categoryRepository->save($newsCategory, true);
+        $allCategories = $this->newsCategoryRepository->findAll();
 
-        $newsCategory = new NewsCategory();
-        $newsCategory->setTitle("Brasil");
-        $this->categoryRepository->save($newsCategory, true);
+        if (sizeof($allCategories) > 0 ){
+            $io->warning('As categorias já existiam, não inseri nenhuma!');
+            exit;
+        }
 
-        $newsCategory = new NewsCategory();
-        $newsCategory->setTitle("Design");
-        $this->categoryRepository->save($newsCategory, true);
+
+
 
         $newsCategory = new NewsCategory();
-        $newsCategory->setTitle("Cultura");
-        $this->categoryRepository->save($newsCategory, true);
+        $newsCategory->setTitle('Mundo');
+        $this->newsCategoryRepository->save($newsCategory,true);
 
         $newsCategory = new NewsCategory();
-        $newsCategory->setTitle("Negócios");
-        $this->categoryRepository->save($newsCategory, true);
+        $newsCategory->setTitle('Brasil');
+        $this->newsCategoryRepository->save($newsCategory,true);
 
         $newsCategory = new NewsCategory();
-        $newsCategory->setTitle("Política");
-        $this->categoryRepository->save($newsCategory, true);
+        $newsCategory->setTitle('Tecnologia');
+        $this->newsCategoryRepository->save($newsCategory,true);
 
         $newsCategory = new NewsCategory();
-        $newsCategory->setTitle("Tecnologia");
-        $this->categoryRepository->save($newsCategory, true);
+        $newsCategory->setTitle('Design');
+        $this->newsCategoryRepository->save($newsCategory,true);
 
         $newsCategory = new NewsCategory();
-        $newsCategory->setTitle("Opinião");
-        $this->categoryRepository->save($newsCategory, true);
+        $newsCategory->setTitle('Cultura');
+        $this->newsCategoryRepository->save($newsCategory,true);
 
         $newsCategory = new NewsCategory();
-        $newsCategory->setTitle("Ciência");
-        $this->categoryRepository->save($newsCategory, true);
+        $newsCategory->setTitle('Negócios');
+        $this->newsCategoryRepository->save($newsCategory,true);
 
         $newsCategory = new NewsCategory();
-        $newsCategory->setTitle("Saúde");
-        $this->categoryRepository->save($newsCategory, true);
+        $newsCategory->setTitle('Política');
+        $this->newsCategoryRepository->save($newsCategory,true);
 
         $newsCategory = new NewsCategory();
-        $newsCategory->setTitle("Estilo");
-        $this->categoryRepository->save($newsCategory, true);
+        $newsCategory->setTitle('Opinião');
+        $this->newsCategoryRepository->save($newsCategory,true);
 
         $newsCategory = new NewsCategory();
-        $newsCategory->setTitle("Viagens");
-        $this->categoryRepository->save($newsCategory, true);
+        $newsCategory->setTitle('Ciência');
+        $this->newsCategoryRepository->save($newsCategory,true);
+
+        $newsCategory = new NewsCategory();
+        $newsCategory->setTitle('Saúde');
+        $this->newsCategoryRepository->save($newsCategory,true);
+
+        $newsCategory = new NewsCategory();
+        $newsCategory->setTitle('Estilo');
+        $this->newsCategoryRepository->save($newsCategory,true);
+
+        $newsCategory = new NewsCategory();
+        $newsCategory->setTitle('Viagens');
+        $this->newsCategoryRepository->save($newsCategory,true);
 
 
-        $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
+        $io->success('Categorias criadas com sucesso');
 
         return Command::SUCCESS;
     }
