@@ -2,7 +2,7 @@
 {% block title %}{{ pageTitle }}{% endblock %}
 {% block body %}
 
-
+     
 
     <main>
 
@@ -35,9 +35,10 @@
 
                                         <button type="button" class="btn btn-sm btn-outline-secondary">Detalhes</button>
                                     </div>
-                                    <small class="text-muted">{{ new.createdAt|ago(locale='pt') }}</small>
+                                    <small class="text-muted">{{ new.createAt|ago(locale='pt') }}</small>
                                 </div>
                             </div>
+                        </div>
                     </div>
                     {% endfor %}
 

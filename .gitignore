@@ -9,7 +9,7 @@
 /vendor/
 ###< symfony/framework-bundle ###
 
-
+.DS_Store
 .idea/*
 
 ###> symfony/webpack-encore-bundle ###
