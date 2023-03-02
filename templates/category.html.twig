@@ -2,7 +2,7 @@
 {% block title %}{{ pageTitle }}{% endblock %}
 {% block body %}
 
-
+     
 
     <main>
 
@@ -29,16 +29,16 @@
                         <div class="card shadow-sm">
                             <img src="{{ new.image }}">
                             <div class="card-body">
-                                <p class="card-text"><h3>{{ new.title }}</h3></p>
+                                <p class="card-text"><h3>{{ new.title }}</h3> {{ new.description }}</p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="btn-group">
 
                                         <button type="button" class="btn btn-sm btn-outline-secondary">Detalhes</button>
                                     </div>
-                                    <small class="text-muted">{{ new.createdAt|ago(locale='pt') }}</small>
+                                    <small class="text-muted">{{ new.createAt|ago(locale='pt') }}</small>
                                 </div>
                             </div>
-                    </div>
+                        </div>
                     </div>
                     {% endfor %}
 
