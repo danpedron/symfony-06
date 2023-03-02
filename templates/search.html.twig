@@ -1,52 +1,36 @@
 {% extends 'base.html.twig' %}
-{% block title %}{{ pageTitle }}{% endblock %}
+{% block title %}Pesquisa{% endblock %}
 {% block body %}
 
-    <!--Section: News of the day-->
-    <main class="container">
 
-        <section id="section-introduction">
-            <!-- Main title -->
-            <h2 class="h1 fw-bold">{{ search }}
+    <div class="container">
+        <h1>Pequisando por {{ search }}...</h1>
+        <!--Section: News of the day-->
+        {% for newsItem in news %}
+            <hr>
+            <div class="row gx-5">
+                <div class="col-md-4 mb-4">
+                    <div class="bg-image hover-overlay ripple shadow-2-strong rounded-5" data-mdb-ripple-color="light">
+                        <img src="{{ newsItem.image }}" class="img-fluid"/>
+                        <a href="#!">
+                            <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                        </a>
+                    </div>
+                </div>
 
-            </h2>
-
-            <!-- Seo title -->
-            <h1 class="h6">Pesquisando por {{ search }}
-            </h1>
-
-
-        </section>
-<hr>
-        {% if news|length == 0 %}
-            Não encontramos nenhum resultado<br><br>
-        {% endif %}
-
-        {% for new in news %}
-    <div class="row gx-5">
-        <div class="col-md-4 mb-4">
-            <div class="bg-image hover-overlay ripple shadow-2-strong rounded-5" data-mdb-ripple-color="light">
-                <img src="{{ new.image }}" class="img-fluid" />
-                <a href="#!">
-                    <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
-                </a>
+                <div class="col-md-8 mb-4">
+                    <a href="{{ path('app_category_list',{'slug':newsItem.category.title}) }}" class="badge bg-danger px-2 py-1 shadow-1-strong mb-3 text-white">{{ newsItem.category.title }}</a>
+                    <h4><strong>{{ newsItem.title }}</strong></h4>
+                    <p class="text-muted">
+                        {{ newsItem.description }}
+                    </p>
+                    <a href="{{ path('app_news_detail',{'slug':newsItem.slug}) }}" type="button" class="btn btn-primary">Leia mais</a>
+                </div>
             </div>
-        </div>
-
-        <div class="col-md-8 mb-8">
-            <a href="{{ path('app_category_list',{'slug':new.category.title}) }}" class="text-white badge bg-danger px-2 py-1 shadow-1-strong mb-3">{{ new.category.title }}</a>
-            <h4><strong>{{ new.title }}</strong></h4>
-            <p class="text-muted">
-               {{ new.description }}
-            </p>
-            <a href="{{ path('app_home_newsdetail',{'slug':new.slug}) }}" type="button" class="btn btn-primary">Leia Mais</a>
-        </div>
-    </div>
+        {% else %}
+            <h3 class="mb-5">Não encontramos nenhuma notícia que atenda aos requisitos.</h3>
         {% endfor %}
-    </main>
-
-{#    aqui #}
-    <!--Section: News of the day-->
-
+        <!--Section: News of the day-->
+    </div>
 
 {% endblock %}

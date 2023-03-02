@@ -72,10 +72,12 @@
     "extra": {
         "symfony": {
             "allow-contrib": true,
-            "require": "6.2.*"
+            "require": "6.2.*",
+            "docker": true
         }
     },
     "require-dev": {
+        "doctrine/doctrine-fixtures-bundle": "^3.4",
         "symfony/debug-bundle": "6.2.*",
         "symfony/maker-bundle": "^1.48",
         "symfony/stopwatch": "6.2.*",
