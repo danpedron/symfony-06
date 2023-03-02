@@ -16,9 +16,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class NewsRepository extends ServiceEntityRepository
 {
-    public function __construct(
-        ManagerRegistry $registry,
-        private NewsCategoryRepository $categoryRepository)
+    public function __construct(ManagerRegistry $registry, private NewsCategoryRepository $newsCategoryRepository)
     {
         parent::__construct($registry, News::class);
     }
@@ -43,21 +41,24 @@ class NewsRepository extends ServiceEntityRepository
 
     public function findByCategoryTitle(string $title):array
     {
-        $category = $this->categoryRepository->findOneBy([
-            'title' => $title,
+        $category = $this->newsCategoryRepository->findOneBy([
+            'title' => $title
         ]);
 
-        $news = $this->findBy([
+        $newsCollection = $this->findBy([
             'category' => $category
         ]);
 
-        return $news;
+        return $newsCollection;
     }
 
+    /**
+     * @return News[] Returns an array of News objects
+     */
     public function findBySearch($value): array
     {
         return $this->createQueryBuilder('n')
-            ->andWhere('n.title like %'.$value.'%')
+            ->andWhere('n.title like :val')
             ->setParameter('val', '%'.$value.'%')
             ->orderBy('n.id', 'ASC')
             ->setMaxResults(10)
