@@ -2,7 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\News;
+use App\Entity\NewsCategory;
 use App\Service\NewsRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -11,19 +14,11 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
-    public function __construct(
-
-        private NewsRepository $newsRepository,
-        private bool $isDebug
-    )
-    {
-
-    }
 
     #[Route(path:'/', name: 'app_home')]
-    public function home(): Response
+    public function home(NewsRepository $newsRepository): Response
     {
-        $categories = $this->newsRepository->findAllCategories();
+        $categories = $newsRepository->findAllCategories();
 
         $pageTitle = "Sistema de Notícias";
         return $this->render('home.html.twig', [
@@ -34,16 +29,19 @@ class HomeController extends AbstractController
 
 
     #[Route(path:'/category/{slug}', name: 'app_category_list')]
-    public function category($slug): Response
+    public function category($slug, EntityManagerInterface $entityManager): Response
     {
-        $categories = $this->newsRepository->findAllCategories();
-        $news =  $this->newsRepository->findAll();
+        $newsRepository = $entityManager->getRepository(News::class);
+        $news =  $newsRepository->findAll();
         $pageTitle = $slug;
+
+        $newsCategoryRepository = $entityManager->getRepository(NewsCategory::class);
+        $categories =  $newsCategoryRepository->findBy([],['title'=>'ASC']);
 
         return $this->render('category.html.twig', [
             'pageTitle' => $pageTitle,
-            'categories' => $categories,
             'news' => $news,
+            'categories' => $categories
         ]);
     }
 
