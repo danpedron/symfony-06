@@ -219,7 +219,7 @@
         "version": "v3.5.1"
     },
     "zenstruck/foundry": {
-        "version": "1.28",
+        "version": "1.29",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "main",
