@@ -153,6 +153,15 @@
             "config/packages/mailer.yaml"
         ]
     },
+    "symfony/mailjet-mailer": {
+        "version": "6.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "5.2",
+            "ref": "037c3256baa3334fd4cc3092a63209ae523696ff"
+        }
+    },
     "symfony/maker-bundle": {
         "version": "1.48",
         "recipe": {
@@ -291,7 +300,7 @@
         "version": "v3.5.1"
     },
     "zenstruck/foundry": {
-        "version": "1.28",
+        "version": "1.29",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "main",
