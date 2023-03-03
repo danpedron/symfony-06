@@ -8,8 +8,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class UserCrudController extends AbstractCrudController
 {
@@ -27,6 +25,7 @@ class UserCrudController extends AbstractCrudController
             ->setPaginatorPageSize(3)
             ;
     }
+
 
     public function configureFields(string $pageName): iterable
     {
