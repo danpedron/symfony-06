@@ -7,16 +7,13 @@ use App\Entity\User;
 use App\Factory\NewsCategoryFactory;
 use App\Factory\NewsFactory;
 use App\Factory\UserFactory;
-use App\Repository\NewsCategoryRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
-use Faker\Generator;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
 {
-    private Generator $faker;
 
     public function __construct(
         Private UserPasswordHasherInterface $passwordHasher,
@@ -27,13 +24,15 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        NewsCategoryFactory::createMany(7);
-        NewsFactory::createMany(200,function(){
-           return [
-            'category' => NewsCategoryFactory::random()
 
+        NewsCategoryFactory::createMany(7);
+        NewsFactory::createMany(1000,function(){
+        return[
+            'category' => NewsCategoryFactory::random()
         ];
         });
+
+
 
         $user = new User();
         $user->setEmail('jonaspoli@gmail.com');
@@ -41,6 +40,8 @@ class AppFixtures extends Fixture
         $manager->persist($user);
 
         $plaintextPassword = 'password';
+
+        // hash the password (based on the security.yaml config for the $user class)
         $hashedPassword = $this->passwordHasher->hashPassword(
             $user,
             $plaintextPassword
@@ -54,14 +55,16 @@ class AppFixtures extends Fixture
             $user->setRoles(['ROLE_USER']);
             $manager->persist($user);
 
-            $plaintextPassword = $this->faker->word();
+            $plaintextPassword = uniqid();
+
+            // hash the password (based on the security.yaml config for the $user class)
             $hashedPassword = $this->passwordHasher->hashPassword(
                 $user,
                 $plaintextPassword
             );
             $user->setPassword($hashedPassword);
         }
-        $manager->flush();
 
+        $manager->flush();
     }
 }

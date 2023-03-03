@@ -22,7 +22,7 @@ use Zenstruck\Foundry\RepositoryProxy;
  * @method static UserRepository|RepositoryProxy repository()
  * @method static User[]|Proxy[] all()
  * @method static User[]|Proxy[] createMany(int $number, array|callable $attributes = [])
- * @method static User[]|Proxy[] createSequence(array|callable $sequence)
+ * @method static User[]|Proxy[] createSequence(iterable|callable $sequence)
  * @method static User[]|Proxy[] findBy(array $attributes)
  * @method static User[]|Proxy[] randomRange(int $min, int $max, array $attributes = [])
  * @method static User[]|Proxy[] randomSet(int $number, array $attributes = [])
@@ -48,7 +48,7 @@ final class UserFactory extends ModelFactory
     {
         return [
             'email' => self::faker()->email(),
-            'password' => self::faker()->text(),
+            'password' => uniqid(),
             'roles' => ['ROLE_USER'],
         ];
     }
