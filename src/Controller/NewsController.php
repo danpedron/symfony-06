@@ -36,15 +36,14 @@ class NewsController extends AbstractController
     #[Route('news/new')]
     public function new(EntityManagerInterface $entityManager):Response
     {
+        $rand = rand(18,30);
         $news = new News();
-        $news->setTitle('Jovem recebe prêmio em São Paulo');
-        $news->setDescription('Um Jovem de 18 anos recebe prêmio memorável em São Paulo');
+        $news->setTitle('Jovem de '.$rand.' anos recebe um prêmio');
+        $news->setDescription('Um jovem brasileiro de '.$rand.' anos recebeu um prêmio na Suécia');
 
         $entityManager->persist($news);
         $entityManager->flush();
 
-        return new Response(
-            sprintf('Notícia criada em %s',$news->getCreatedAt()->format('d/m/y h:i:s'))
-        );
+        return new Response('<h1>Notícia Criada</h1>em:'.$news->getCreateAt()->format('d/m/Y h:i:s'));
     }
 }

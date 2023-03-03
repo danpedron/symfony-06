@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\News;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -16,9 +17,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class NewsRepository extends ServiceEntityRepository
 {
-    public function __construct(
-        ManagerRegistry $registry,
-        private NewsCategoryRepository $categoryRepository)
+    public function __construct(ManagerRegistry $registry, private NewsCategoryRepository $newsCategoryRepository)
     {
         parent::__construct($registry, News::class);
     }
@@ -43,31 +42,57 @@ class NewsRepository extends ServiceEntityRepository
 
     public function findByCategoryTitle(string $title):array
     {
-        $category = $this->categoryRepository->findOneBy([
-            'title' => $title,
+        $category = $this->newsCategoryRepository->findOneBy([
+            'title' => $title
         ]);
 
-        $news = $this->findBy(
-            [
+        $newsCollection = $this->findBy([
             'category' => $category
         ],[
-            'createdAt' =>'DESC'
-            ]
-        );
+            'createAt' => 'DESC'
+        ]);
 
-        return $news;
+        return $newsCollection;
     }
 
+    /**
+     * @return News[] Returns an array of News objects
+     */
+    public function createQueryBuilderByCategoryTitle($value): QueryBuilder
+    {
+        return $this->createQueryBuilder('n')
+            ->join('n.category','c')
+            ->andWhere('c.title like :val')
+            ->setParameter('val', '%'.$value.'%')
+            ->orderBy('n.createAt', 'DESC')
+            ;
+    }
+
+    /**
+     * @return News[] Returns an array of News objects
+     */
     public function findBySearch($value): array
     {
         return $this->createQueryBuilder('n')
             ->andWhere('n.title like :val')
             ->setParameter('val', '%'.$value.'%')
-            ->orderBy('n.createdAt', 'DESC')
+            ->orderBy('n.createAt', 'DESC')
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    /**
+     * @return News[] Returns an array of News objects
+     */
+    public function createQueryBuilderBySearch($value): QueryBuilder
+    {
+        return $this->createQueryBuilder('n')
+            ->andWhere('n.title like :val')
+            ->setParameter('val', '%'.$value.'%')
+            ->orderBy('n.createAt', 'DESC')
+            ;
     }
 
 //    public function findOneBySomeField($value): ?News

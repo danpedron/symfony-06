@@ -2,7 +2,7 @@
 {% block title %}{{ pageTitle }}{% endblock %}
 {% block body %}
 
-
+     
 
     <main>
 
@@ -23,24 +23,25 @@
             <div class="container">
 
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                    {% for new in news %}
+                    {% for new in pager %}
+
                     <div class="col">
-                        <a class="card card-news shadow-sm text-decoration-none" href="{{ path('app_home_newsdetail',{'slug':new.slug}) }}">
+                        <a href="{{ path('app_news_detail',{'slug':new.slug}) }}" class="card shadow-sm text-decoration-none text-black">
                             <img src="{{ new.image }}">
                             <div class="card-body">
-                                <p class="card-text"><h3 class="text-black">{{ new.title }}</h3></p>
+                                <p class="card-text"><h3>{{ new.title }}</h3> {{ new.description }}</p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="btn-group">
 
-                                        <button type="button" class="btn btn-sm btn-outline-secondary">Detalhes</button>
+                                        <div type="button" class="btn btn-sm btn-outline-secondary">Detalhes</div href="{{ path('app_news_detail',{'slug':new.slug}) }}">
                                     </div>
-                                    <small class="text-muted">{{ new.createdAt|ago(locale='pt') }}</small>
+                                    <small class="text-muted">{{ new.createAt|ago(locale='pt') }}</small>
                                 </div>
                             </div>
-                    </a>
+                        </a>
                     </div>
                     {% endfor %}
-
+                    {{ pagerfanta(pager) }}
 
                 </div>
             </div>

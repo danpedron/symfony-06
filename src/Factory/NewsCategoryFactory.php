@@ -22,7 +22,7 @@ use Zenstruck\Foundry\RepositoryProxy;
  * @method static NewsCategoryRepository|RepositoryProxy repository()
  * @method static NewsCategory[]|Proxy[] all()
  * @method static NewsCategory[]|Proxy[] createMany(int $number, array|callable $attributes = [])
- * @method static NewsCategory[]|Proxy[] createSequence(array|callable $sequence)
+ * @method static NewsCategory[]|Proxy[] createSequence(iterable|callable $sequence)
  * @method static NewsCategory[]|Proxy[] findBy(array $attributes)
  * @method static NewsCategory[]|Proxy[] randomRange(int $min, int $max, array $attributes = [])
  * @method static NewsCategory[]|Proxy[] randomSet(int $number, array $attributes = [])
@@ -47,7 +47,7 @@ final class NewsCategoryFactory extends ModelFactory
     protected function getDefaults(): array
     {
         return [
-            'title' => self::faker()->jobTitle(),
+            'title' => self::faker()->jobTitle()
         ];
     }
 
