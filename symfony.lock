@@ -59,6 +59,18 @@
             "ref": "b131e6cbfe1b898a508987851963fff485986285"
         }
     },
+    "friendsofsymfony/ckeditor-bundle": {
+        "version": "2.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "2.0",
+            "ref": "f5ad42002183a6881962683e6d84bbb25cdfce5d"
+        },
+        "files": [
+            "config/packages/fos_ckeditor.yaml"
+        ]
+    },
     "knplabs/knp-time-bundle": {
         "version": "v1.20.0"
     },
@@ -127,6 +139,18 @@
             "public/index.php",
             "src/Controller/.gitignore",
             "src/Kernel.php"
+        ]
+    },
+    "symfony/mailer": {
+        "version": "6.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "4.3",
+            "ref": "2bf89438209656b85b9a49238c4467bff1b1f939"
+        },
+        "files": [
+            "config/packages/mailer.yaml"
         ]
     },
     "symfony/maker-bundle": {
@@ -260,11 +284,14 @@
             "webpack.config.js"
         ]
     },
+    "symfonycasts/verify-email-bundle": {
+        "version": "v1.13.0"
+    },
     "twig/extra-bundle": {
         "version": "v3.5.1"
     },
     "zenstruck/foundry": {
-        "version": "1.28",
+        "version": "1.29",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "main",
