@@ -3,7 +3,6 @@
 namespace App\Factory;
 
 use App\Entity\News;
-use App\Entity\NewsCategory;
 use App\Repository\NewsRepository;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
@@ -23,7 +22,7 @@ use Zenstruck\Foundry\RepositoryProxy;
  * @method static NewsRepository|RepositoryProxy repository()
  * @method static News[]|Proxy[] all()
  * @method static News[]|Proxy[] createMany(int $number, array|callable $attributes = [])
- * @method static News[]|Proxy[] createSequence(array|callable $sequence)
+ * @method static News[]|Proxy[] createSequence(iterable|callable $sequence)
  * @method static News[]|Proxy[] findBy(array $attributes)
  * @method static News[]|Proxy[] randomRange(int $min, int $max, array $attributes = [])
  * @method static News[]|Proxy[] randomSet(int $number, array $attributes = [])
@@ -48,10 +47,10 @@ final class NewsFactory extends ModelFactory
     protected function getDefaults(): array
     {
         return [
-            'createdAt' => \DateTimeImmutable::createFromMutable(self::faker()->dateTimeBetween('-1 year')),
+            'createAt' => \DateTimeImmutable::createFromMutable(self::faker()->dateTimeBetween('-1 year')),
             'description' => self::faker()->text(),
+            'title' => self::faker()->words(5, true),
             'image' => 'https://loremflickr.com/419/225/'.rand(1000,10000),
-            'title' => self::faker()->words(5,true),
             'content' => self::faker()->sentences(30,true),
         ];
     }
