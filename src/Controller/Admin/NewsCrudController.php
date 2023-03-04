@@ -45,8 +45,6 @@ class NewsCrudController extends AbstractCrudController
             IdField::new('id')->hideOnForm(),
             AssociationField::new('category')->setFormTypeOptions(['choice_label'=>'title','choice_value'=> 'id'] )->setLabel('Categoria'),
             TextField::new('title')->setLabel('Título'),
-            TextareaField::new('description')->hideOnIndex()->setLabel('Descrição')->setFormType(CKEditorType::class),
-            TextareaField::new('content')->hideOnIndex()->setLabel('Conteúdo')->hideOnIndex(),
             DateTimeField::new('createdAt')->setLabel('Criada em')->setFormTypeOption('disabled','disabled'),
             TextField::new('slug')->setLabel('Slug')->setFormTypeOption('disabled','disabled')->hideOnIndex(),
             ImageField::new('image')
@@ -55,6 +53,9 @@ class NewsCrudController extends AbstractCrudController
                 ->setUploadDir('public/uploads/images')
                 ->setUploadedFileNamePattern('[slug]-[timestamp].[extension]')
                 ->setRequired(false),
+            TextareaField::new('description')->hideOnIndex()->setLabel('Descrição')->hideOnIndex(),
+            TextareaField::new('content')->hideOnIndex()->setLabel('Conteúdo')->setFormType(CKEditorType::class),
+
 
         ];
     }

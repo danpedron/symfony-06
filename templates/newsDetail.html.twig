@@ -7,7 +7,7 @@
         </h1>
         <hr>
         <h3>
-            {{ news.description }}
+            {{ news.description|raw }}
         </h3>
         <a href="{{ path('app_category_list',{'slug':news.category.title}) }}" class="text-white badge bg-danger px-2 py-1 shadow-1-strong mb-3 text-decoration-none">{{ news.category.title }}</a> - {{ news.createdAt|ago(locale='pt') }}
 

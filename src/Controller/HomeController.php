@@ -102,4 +102,31 @@ class HomeController extends AbstractController
         ]);
     }
 
+    #[Route(path: '/data/',name: 'app_news_date')]
+    public function filterDate(Request $request, NewsCategoryRepository $categoryRepository, NewsRepository $newsRepository): Response
+    {
+        $year = $request->query->get('ano',1);
+        $month = $request->query->get('mes',1);
+
+        $search = "Notícias do mês ".$month." de ".$year;
+
+        $categories = $categoryRepository->findAll();
+
+        // $news = $newsRepository->findBySearch($search);
+        $queryBuilder = $newsRepository->createQueryBuilderByYearAndMounth($year,$month);
+        $adapter = new QueryAdapter($queryBuilder);
+        $pagerFanta = Pagerfanta::createForCurrentPageWithMaxPerPage(
+            $adapter,
+            $request->query->get('page',1),
+            6
+        );
+
+        return $this->render('search.html.twig', [
+            'pageTitle' => 'Resultado da pesquisa',
+            'categories' => $categories,
+            'pager' => $pagerFanta,
+            'search' => $search,
+        ]);
+    }
+
 }
