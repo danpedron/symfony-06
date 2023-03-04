@@ -4,8 +4,6 @@ namespace App\Controller\Admin;
 
 use App\Entity\News;
 use App\Repository\NewsCategoryRepository;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
@@ -47,24 +45,16 @@ class NewsCrudController extends AbstractCrudController
             IdField::new('id')->hideOnForm(),
             AssociationField::new('category')->setFormTypeOptions(['choice_label'=>'title','choice_value'=> 'id'] )->setLabel('Categoria'),
             TextField::new('title')->setLabel('Título'),
+            TextareaField::new('content')->hideOnIndex()->setLabel('Conteúdo')->setFormType(CKEditorType::class),
+            DateTimeField::new('createdAt')->setLabel('Criada em')->setFormTypeOption('disabled','disabled'),
+            TextField::new('slug')->setLabel('Slug')->setFormTypeOption('disabled','disabled')->hideOnIndex(),
             ImageField::new('image')
-                ->setLabel('Foto da Notícia')
+                ->setLabel('Imagem da notícia')
                 ->setBasePath('uploads/images')
                 ->setUploadDir('public/uploads/images')
                 ->setUploadedFileNamePattern('[slug]-[timestamp].[extension]')
                 ->setRequired(false),
-            TextareaField::new('content')->hideOnIndex()->setLabel('Conteúdo')->setFormType(CKEditorType::class),
-            DateTimeField::new('createdAt')->setLabel('Criada em')->setFormTypeOption('disabled','disabled'),
-            TextField::new('slug')->setLabel('Slug')->setFormTypeOption('disabled','disabled')->hideOnIndex(),
 
         ];
     }
-
-    public function configureActions(Actions $actions): Actions
-    {
-        return parent::configureActions($actions)
-            ->disable(Action::DETAIL);
-    }
-
-
 }

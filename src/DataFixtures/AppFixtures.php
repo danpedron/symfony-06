@@ -54,7 +54,7 @@ class AppFixtures extends Fixture
             $user->setRoles(['ROLE_USER']);
             $manager->persist($user);
 
-            $plaintextPassword = $this->faker->word();
+            $plaintextPassword = 'password';
             $hashedPassword = $this->passwordHasher->hashPassword(
                 $user,
                 $plaintextPassword

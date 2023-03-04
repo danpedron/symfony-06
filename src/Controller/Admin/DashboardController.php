@@ -5,9 +5,8 @@ namespace App\Controller\Admin;
 use App\Entity\News;
 use App\Entity\NewsCategory;
 use App\Entity\User;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use App\Repository\NewsCategoryRepository;
+use App\Repository\NewsRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -17,11 +16,31 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class DashboardController extends AbstractDashboardController
 {
+    public function __construct(
+        private NewsRepository $newsRepository,
+        private NewsCategoryRepository $newsCategoryRepository,
+    )
+    {
+    }
+
+
     #[Route('/admin', name: 'admin')]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_USER')]
     public function index(): Response
     {
-        return $this->render('admin/dashboard.html.twig');
+        if ($this->isGranted('ROLE_ADMIN')){
+            return $this->render('admin/dashboard.html.twig',[
+                'lastNews' => $this->newsRepository->findLastNews(10),
+                'bestCategories' =>$this->newsCategoryRepository->findBestCategories(10),
+            ]);
+        } else {
+            return $this->render('admin/dashboard.html.twig',[
+                'lastNews' => $this->newsRepository->findLastNews(5),
+                'bestCategories' =>$this->newsCategoryRepository->findBestCategories(5),
+            ]);
+        }
+
+
     }
 
     public function configureDashboard(): Dashboard
@@ -43,11 +62,4 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Categoria de Notícias', 'fas fa-newspaper', NewsCategory::class);
         yield MenuItem::linkToCrud('Notícias', 'fas fa-newspaper', News::class);
     }
-
-    public function configureActions(): Actions
-    {
-        return parent::configureActions()
-            ->add(Crud::PAGE_INDEX, Action::DETAIL);
-    }
-
 }
