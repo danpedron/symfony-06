@@ -31,7 +31,7 @@
                     {% for new in pager %}
                     <div class="col">
                         <a class="card card-news shadow-sm text-decoration-none" href="{{ path('app_home_newsdetail',{'slug':new.slug}) }}">
-                            <img src="{{ asset('uploads/images/') }}{{ new.image }}">
+                            <img src="{{ new.image }}">
                             <div class="card-body">
                                 <p class="card-text"><h3 class="text-black">{{ new.title }}</h3></p>
                                 <div class="d-flex justify-content-between align-items-center">
