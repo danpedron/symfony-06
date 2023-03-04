@@ -26,15 +26,17 @@ class HomeController extends AbstractController
     }
 
     #[Route(path:'/', name: 'app_home')]
-    public function home(NewsCategoryRepository $categoryRepository): Response
+    public function home(NewsCategoryRepository $categoryRepository, NewsRepository $newsRepository): Response
     {
 
         $categories = $categoryRepository->findAll();
+        $news = $newsRepository->findLastNews(10);
 
         $pageTitle = "Sistema de Notícias";
         return $this->render('home.html.twig', [
             'pageTitle' => $pageTitle,
             'categories' => $categories,
+            'news' => $news,
         ]);
     }
 

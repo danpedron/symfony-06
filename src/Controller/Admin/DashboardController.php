@@ -7,9 +7,6 @@ use App\Entity\NewsCategory;
 use App\Entity\User;
 use App\Repository\NewsCategoryRepository;
 use App\Repository\NewsRepository;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -17,21 +14,33 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-
 class DashboardController extends AbstractDashboardController
 {
-    public function __construct(private NewsRepository $newsRepository)
+    public function __construct(
+        private NewsRepository $newsRepository,
+        private NewsCategoryRepository $newsCategoryRepository,
+    )
     {
     }
+
 
     #[Route('/admin', name: 'admin')]
     #[IsGranted('ROLE_USER')]
     public function index(): Response
     {
-        return $this->render('admin/dashboard.html.twig',[
-            'lastNews' => $this->newsRepository->findLatestNews(10),
-            'bestCat' => $this->newsRepository->findBestCategory(),
+        if ($this->isGranted('ROLE_ADMIN')){
+            return $this->render('admin/dashboard.html.twig',[
+                'lastNews' => $this->newsRepository->findLastNews(10),
+                'bestCategories' =>$this->newsCategoryRepository->findBestCategories(10),
             ]);
+        } else {
+            return $this->render('admin/dashboard.html.twig',[
+                'lastNews' => $this->newsRepository->findLastNews(5),
+                'bestCategories' =>$this->newsCategoryRepository->findBestCategories(5),
+            ]);
+        }
+
+
     }
 
     public function configureDashboard(): Dashboard
@@ -49,17 +58,9 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
-        if ($this->isGranted('ROLE_ADMIN')) {
-            yield MenuItem::linkToCrud('Usuários', 'fas fa-users', User::class);
-        }
+        yield MenuItem::linkToCrud('Usuários', 'fas fa-users', User::class);
         yield MenuItem::linkToCrud('Categoria de Notícias', 'fas fa-newspaper', NewsCategory::class);
         yield MenuItem::linkToCrud('Notícias', 'fas fa-newspaper', News::class);
+        yield MenuItem::linkToRoute('Enviar Email Pessoal', 'fa fa-envelope-o','app_admin_send_personal_mail');
     }
-
-    public function configureActions(): Actions
-    {
-        return parent::configureActions()
-            ->add(Crud::PAGE_INDEX, Action::DETAIL);
-    }
-
 }
