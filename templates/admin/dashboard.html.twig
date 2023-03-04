@@ -1,33 +1,35 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
 
 {% block content_title %}Bem-vindo à Administração{% endblock %}
-
 {% block main %}
+    <div class="row">
+        <div class="col-6">
+            <h3>Últimas Notícias</h3>
+            <ol>
+                {% for news in lastNews %}
+                    <li class="mb-2">
+                        <a target="_blank" href="{{ path('app_home_newsdetail',{'slug':news.slug}) }}">{{ news.title }}</a>
+                        <br> - {{ news.createdAt|date('d/m/Y h:i') }}
+                    </li>
+                {% endfor %}
+            </ol>
+        </div>
+        <div class="col-6">
+            <h3>Melhores Categorias</h3>
+            <ol>
+                {% for category in bestCategories %}
+                    <li><a target="_blank" href="{{ path('app_category_list',{'slug':category.title}) }}"> ({{ category.qtd }}) - {{ category.title }}</a></li>
+                {% endfor %}
 
-<div class="row">
-    <div class="col-6">
-        <h3>Últimas Notícias</h3>
-        <ol>
-            {% for new in lastNews %}
-                <li>
-                    <a href="{{ path('app_home_newsdetail', {'slug': new.slug}) }}">{{ new.title }}</a>
-                    <br>- {{ new.createdAt|date('d/m/Y H:i') }}
-                </li>
-            {% endfor %}
-        </ol>
+            </ol>
+        </div>
     </div>
-
-    <div class="col-6">
-        <h3>Categorias mais usadas</h3>
-        <ol>
-            {% for cat in bestCat %}
-                <li>
-                    <a href="{{ path('app_category_list', {'slug': cat.title}) }}">({{ cat.qtd }}) - {{ cat.title }}</a>
-                </li>
-            {% endfor %}
-        </ol>
+    <hr>
+    {% if is_granted('ROLE_ADMIN') %}
+    <div class="row">
+        <div class="col">
+            <a target="_blank" href="{{ path('app_home') }}">Link para a home do site</a>
+        </div>
     </div>
-</div>
-
-
+    {% endif  %}
 {% endblock %}

@@ -39,6 +39,19 @@ class NewsCategoryRepository extends ServiceEntityRepository
         }
     }
 
+    public function findBestCategories($qtd=5): array
+    {
+        return $this->createQueryBuilder('c')
+            ->join('c.news','n')
+            ->select('c.title, count(n.category) as qtd')
+            ->groupBy('n.category')
+            ->orderBy('qtd','DESC')
+            ->setMaxResults($qtd)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 //    /**
 //     * @return NewsCategory[] Returns an array of NewsCategory objects
 //     */

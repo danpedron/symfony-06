@@ -141,15 +141,6 @@
             "src/Kernel.php"
         ]
     },
-    "symfony/google-mailer": {
-        "version": "6.2",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "main",
-            "version": "4.4",
-            "ref": "f8fd4ddb9b477510f8f4bce2b9c054ab428c0120"
-        }
-    },
     "symfony/mailer": {
         "version": "6.2",
         "recipe": {
@@ -309,7 +300,7 @@
         "version": "v3.5.1"
     },
     "zenstruck/foundry": {
-        "version": "1.28",
+        "version": "1.29",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "main",
